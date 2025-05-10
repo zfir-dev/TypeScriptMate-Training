@@ -1,3 +1,4 @@
+# fetch_top_ts_repos.sh
 #!/usr/bin/env bash
 set -euo pipefail
 
@@ -49,7 +50,7 @@ done
 head -n "${REPO_COUNT}" "${OUTPUT_FILE}" > tmp && mv tmp "${OUTPUT_FILE}"
 echo "Saved exactly ${REPO_COUNT} repositories to ${OUTPUT_FILE}."
 
-
+# clone_and_collect.sh
 #!/usr/bin/env bash
 set -euo pipefail
 
@@ -67,6 +68,12 @@ echo "Cloning and sparse-checking each repository..."
 while read -r REPO; do
   NAME=$(basename "${REPO}")
   CLONE_PATH="${WORKDIR}/${NAME}"
+
+  if [[ -d "${CLONE_PATH}" && -n "$(ls -A "${CLONE_PATH}" 2>/dev/null)" ]]; then
+    echo "→ Skipping ${REPO}, directory already exists and is not empty."
+    continue
+  fi
+
   echo "→ Cloning ${REPO} into ${CLONE_PATH}..."
 
   # Clone without blobs
