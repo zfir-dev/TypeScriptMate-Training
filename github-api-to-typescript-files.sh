@@ -1,6 +1,3 @@
-# fetch_top_ts_repos.sh
-
-```bash
 #!/usr/bin/env bash
 set -euo pipefail
 
@@ -22,12 +19,8 @@ curl -s \
 | jq -r '.items[].full_name' > "${OUTPUT_FILE}"
 
 echo "Saved repository list to ${OUTPUT_FILE}."
-```
 
 # clone_and_collect.sh
-
-```bash
-#!/usr/bin/env bash
 set -euo pipefail
 
 # File containing repository list
@@ -75,4 +68,4 @@ find "${WORKDIR}" -type f \( -name '*.ts' -o -name '*.tsx' \) | while read -r FI
   cp "${FILE}" "${DEST_DIR}/${DEST_NAME}"
 done
 
-echo "Done! All TypeScript files are in ${DEST_DIR}."```
+echo "Done! All TypeScript files are in ${DEST_DIR}."
