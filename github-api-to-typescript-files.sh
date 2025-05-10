@@ -1,9 +1,18 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Number of repositories to fetch (default: 50)
-REPO_COUNT="${1:-50}"
+# Usage: ./fetch_top_ts_repos.sh [REPO_COUNT]
+# Example: ./fetch_top_ts_repos.sh 1000
+
+# Number of repositories to fetch (default: 1000)
+REPO_COUNT="${1:-1000}"
+PER_PAGE=100
 OUTPUT_FILE="outputs/github-top-ts-repos.txt"
+
+# Calculate the number of pages needed (GitHub max 100 per page)
+TOTAL_PAGES=$(( (REPO_COUNT + PER_PAGE - 1) / PER_PAGE ))
+
+echo "Requested to fetch top ${REPO_COUNT} repositories (will fetch up to ${TOTAL_PAGES} pages)."
 
 # Ensure GITHUB_TOKEN is set
 if [[ -z "${GITHUB_TOKEN:-}" ]]; then
@@ -11,16 +20,37 @@ if [[ -z "${GITHUB_TOKEN:-}" ]]; then
   exit 1
 fi
 
-echo "Fetching top ${REPO_COUNT} TypeScript repositories..."
-curl -s \
-  -H "Accept: application/vnd.github.v3+json" \
-  -H "Authorization: token ${GITHUB_TOKEN}" \
-  "https://api.github.com/search/repositories?q=language:TypeScript&sort=stars&order=desc&per_page=${REPO_COUNT}" \
-| jq -r '.items[].full_name' > "${OUTPUT_FILE}"
+# Initialize/clear output file
+: > "${OUTPUT_FILE}"
 
-echo "Saved repository list to ${OUTPUT_FILE}."
+# Fetch pages
+for PAGE in $(seq 1 ${TOTAL_PAGES}); do
+  echo "→ Page ${PAGE}/${TOTAL_PAGES}"
+  curl -s \
+    -H "Accept: application/vnd.github.v3+json" \
+    -H "Authorization: token ${GITHUB_TOKEN}" \
+    "https://api.github.com/search/repositories?q=language:TypeScript&sort=stars&order=desc&per_page=${PER_PAGE}&page=${PAGE}" \
+  | jq -r '.items[].full_name' >> "${OUTPUT_FILE}"
 
-# clone_and_collect.sh
+  LINES=$(wc -l < "${OUTPUT_FILE}")
+  echo "   Collected ${LINES} so far"
+
+  # Stop when we've reached the desired count
+  if [[ "${LINES}" -ge "${REPO_COUNT}" ]]; then
+    echo "Reached target of ${REPO_COUNT} repositories."
+    break
+  fi
+
+  # Respect rate limit
+  sleep 1
+done
+
+# Trim to exact count (in case last page overshot)
+head -n "${REPO_COUNT}" "${OUTPUT_FILE}" > tmp && mv tmp "${OUTPUT_FILE}"
+echo "Saved exactly ${REPO_COUNT} repositories to ${OUTPUT_FILE}."
+
+
+#!/usr/bin/env bash
 set -euo pipefail
 
 # File containing repository list
@@ -43,18 +73,19 @@ while read -r REPO; do
   git clone --filter=blob:none --no-checkout "https://github.com/${REPO}.git" "${CLONE_PATH}"
   pushd "${CLONE_PATH}" > /dev/null
 
-    # Initialize sparse-checkout in **no-cone** mode to allow file globs
+    # Determine default branch from remote HEAD
+    git remote set-head origin --auto
+    DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
+    echo "Default branch is ${DEFAULT_BRANCH}"
+
+    # Initialize sparse-checkout in no-cone mode to allow file globs
     git sparse-checkout init --no-cone
 
     # Specify patterns for .ts and .tsx files
     git sparse-checkout set "*.ts" "*.tsx"
 
-    # Checkout default branch (main or master)
-    if git rev-parse --verify origin/main >/dev/null 2>&1; then
-      git checkout main
-    else
-      git checkout master
-    fi
+    # Checkout default branch
+    git checkout "${DEFAULT_BRANCH}"
 
   popd > /dev/null
 done < "${REPO_LIST_FILE}"
