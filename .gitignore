@@ -1,4 +1,9 @@
 .ipynb_checkpoints/
 outputs/
+node_modules/
+
+type-aware-preprocessing-in-ts-files.js
+package.json
+package-lock.json
 
 .DS_Store
