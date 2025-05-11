@@ -8,8 +8,8 @@ import * as fs from "fs";
 import { createObjectCsvWriter } from "csv-writer";
 
 // ─── CONFIG ──────────────────────────────────────────────────────────────────
-const SOURCE_DIR = "outputs/bigcode-ts-output-4000";
-const OUTPUT_FILE = "outputs/ts-output-4000-types.csv";
+const SOURCE_DIR = "outputs/bigcode-ts-output-50000";
+const OUTPUT_FILE = "outputs/bigcode-ts-output-50000-types.csv";
 const BATCH_SIZE = 1000;
 
 // ─── Ensure Output Directory Exists ──────────────────────────────────────────
