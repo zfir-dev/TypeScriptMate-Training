@@ -4,7 +4,7 @@ set -euo pipefail
 # Configuration
 INPUT_DIR="outputs/bigcode-ts-output-4000"     # Change this to your dataset folder
 OUTPUT_DIR="outputs/bigcode-ts-output-4000-formatted"  # Destination for passing files
-TMP_REPORT="bigcode-ts-output-4000-prettier-passed.txt"
+TMP_REPORT="outputs/bigcode-ts-output-4000-prettier-passed.txt"
 
 # Clean output
 rm -rf "$OUTPUT_DIR"
