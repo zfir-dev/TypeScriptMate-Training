@@ -8,25 +8,12 @@ import * as fs from "fs";
 import { createObjectCsvWriter } from "csv-writer";
 
 // ─── CONFIG ──────────────────────────────────────────────────────────────────
-const SOURCE_DIR = "outputs/bigcode-ts-output-50000";
-const OUTPUT_FILE = "outputs/ts-output-50000-types.csv";
+const SOURCE_DIR = "outputs/bigcode-ts-output-4000";
+const OUTPUT_FILE = "outputs/ts-output-4000-types.csv";
 const BATCH_SIZE = 1000;
 
-// ─── CSV Writer ──────────────────────────────────────────────────────────────
-const csvWriter = createObjectCsvWriter({
-    path: OUTPUT_FILE,
-    header: [
-        { id: "file", title: "File" },
-        { id: "interfaces", title: "Interfaces" },
-        { id: "types", title: "TypeAliases" },
-        { id: "enums", title: "Enums" },
-        { id: "classes", title: "Classes" },
-        { id: "decorators", title: "Decorators" },
-        { id: "imports", title: "Imports" },
-        { id: "exports", title: "Exports" },
-        { id: "usedTypes", title: "PredefinedTypesUsed" }
-    ]
-});
+// ─── Ensure Output Directory Exists ──────────────────────────────────────────
+fs.mkdirSync(path.dirname(OUTPUT_FILE), { recursive: true });
 
 // ─── Get All TS Files ────────────────────────────────────────────────────────
 function getAllTSFiles(dir: string): string[] {
@@ -43,14 +30,37 @@ function getAllTSFiles(dir: string): string[] {
     return results;
 }
 
+// ─── CSV Writer Setup ────────────────────────────────────────────────────────
+const csvWriter = createObjectCsvWriter({
+    path: OUTPUT_FILE,
+    header: [
+        { id: "file", title: "File" },
+        { id: "interfaces", title: "Interfaces" },
+        { id: "types", title: "TypeAliases" },
+        { id: "enums", title: "Enums" },
+        { id: "classes", title: "Classes" },
+        { id: "decorators", title: "Decorators" },
+        { id: "imports", title: "Imports" },
+        { id: "exports", title: "Exports" },
+        { id: "usedTypes", title: "PredefinedTypesUsed" }
+    ]
+});
+
 // ─── Main Processing ─────────────────────────────────────────────────────────
 async function processInBatches() {
     const allFiles = getAllTSFiles(SOURCE_DIR);
-    console.log(`📦 Found ${allFiles.length} TypeScript files...`);
+    console.log(`📦 Found ${allFiles.length} TypeScript files in ${SOURCE_DIR}`);
+
+    if (allFiles.length === 0) {
+        console.error("❌ No .ts files found. Check your SOURCE_DIR.");
+        process.exit(1);
+    }
+
+    console.log("🔍 First 5 files:", allFiles.slice(0, 5));
 
     for (let i = 0; i < allFiles.length; i += BATCH_SIZE) {
         const batch = allFiles.slice(i, i + BATCH_SIZE);
-        console.log(`🔄 Processing batch ${i / BATCH_SIZE + 1} (${batch.length} files)...`);
+        console.log(`🔄 Processing batch ${Math.floor(i / BATCH_SIZE) + 1} (${batch.length} files)...`);
 
         const project = new Project({
             useInMemoryFileSystem: false,
@@ -126,8 +136,10 @@ async function processInBatches() {
         await csvWriter.writeRecords(rows);
     }
 
-    console.log("✅ All batches processed.");
+    console.log("✅ All batches processed and written to:", OUTPUT_FILE);
 }
+
+processInBatches();
 
 // ─── Run the script ───────────────────────────────────────────────────────────
 // npx tsc type-aware-preprocessing-in-ts-files.ts
