@@ -72,7 +72,7 @@ async function processInBatches() {
         const rows = [];
 
         for (const sourceFile of project.getSourceFiles()) {
-            const filePath = sourceFile.getFilePath();
+            const fileName = sourceFile.getBaseName();
 
             const interfaces = sourceFile.getInterfaces().map(i => i.getName());
             const types = sourceFile.getTypeAliases().map(t => t.getName());
@@ -121,7 +121,7 @@ async function processInBatches() {
                 );
 
             rows.push({
-                file: filePath,
+                file: fileName,
                 interfaces: interfaces.join(";"),
                 types: types.join(";"),
                 enums: enums.join(";"),
