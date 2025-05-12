@@ -8,8 +8,8 @@ import * as fs from "fs";
 import { createObjectCsvWriter } from "csv-writer";
 
 // ─── CONFIG ──────────────────────────────────────────────────────────────────
-const SOURCE_DIR = "outputs/bigcode-ts-output-50000";
-const OUTPUT_FILE = "outputs/bigcode-ts-output-50000-types.csv";
+const SOURCE_DIR = "outputs/bigcode-ts-output-4000";
+const OUTPUT_FILE = "outputs/bigcode-ts-output-4000-types.csv";
 const BATCH_SIZE = 1000;
 
 // ─── Ensure Output Directory Exists ──────────────────────────────────────────
@@ -49,18 +49,18 @@ const csvWriter = createObjectCsvWriter({
 // ─── Main Processing ─────────────────────────────────────────────────────────
 async function processInBatches() {
     const allFiles = getAllTSFiles(SOURCE_DIR);
-    console.log(`📦 Found ${allFiles.length} TypeScript files in ${SOURCE_DIR}`);
+    console.log(`Found ${allFiles.length} TypeScript files in ${SOURCE_DIR}`);
 
     if (allFiles.length === 0) {
-        console.error("❌ No .ts files found. Check your SOURCE_DIR.");
+        console.error("No .ts files found.");
         process.exit(1);
     }
 
-    console.log("🔍 First 5 files:", allFiles.slice(0, 5));
+    console.log("First 5 files:", allFiles.slice(0, 5));
 
     for (let i = 0; i < allFiles.length; i += BATCH_SIZE) {
         const batch = allFiles.slice(i, i + BATCH_SIZE);
-        console.log(`🔄 Processing batch ${Math.floor(i / BATCH_SIZE) + 1} (${batch.length} files)...`);
+        console.log(`Processing batch ${Math.floor(i / BATCH_SIZE) + 1} (${batch.length} files)...`);
 
         const project = new Project({
             useInMemoryFileSystem: false,
@@ -136,7 +136,7 @@ async function processInBatches() {
         await csvWriter.writeRecords(rows);
     }
 
-    console.log("✅ All batches processed and written to:", OUTPUT_FILE);
+    console.log("All batches processed and written to:", OUTPUT_FILE);
 }
 
 processInBatches();
