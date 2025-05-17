@@ -5,8 +5,8 @@ Steps to Train Model:
 1. Data Preprocess to remove Uncomplete TS files
     -  The preprocessing script to ru prettier on all ts files
     ```bash
-    chmod +x copy-dataset-prettier-passed.sh
-    ./copy-dataset-prettier-passed.sh
+    chmod +x filter-and-copy-ts-files-if-prettier-passed.sh
+    ./filter-and-copy-ts-files-if-prettier-passed.sh
     ```
 
 2. Data Preprocessing to extracts Types Awareness
