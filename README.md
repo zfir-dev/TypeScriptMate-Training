@@ -30,3 +30,16 @@ Steps to Train Model:
    - Use the generated CSV of the Data Preprocessing file as input for training
    - The extracted type information can be used to train a model for type prediction
    - Run all the steps in the `TypeScript Files to Transformer Model` notebook
+
+Deploy on Huggingface:
+
+```bash
+brew install huggingface-cli
+
+huggingface-cli login
+
+cd outputs/typescriptmate
+
+huggingface-cli upload zfir/TypeScriptMate .
+```
+
