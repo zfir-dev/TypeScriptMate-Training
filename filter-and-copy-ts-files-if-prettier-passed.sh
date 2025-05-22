@@ -2,8 +2,8 @@
 set -euo pipefail
 
 # Configuration
-INPUT_DIR="outputs/bigcode-ts-output-4000"     # Change this to your dataset folder
-OUTPUT_DIR="outputs/bigcode-ts-output-4000-formatted"  # Destination for passing files
+INPUT_DIR="outputs/bigcode-ts-output-4000"
+OUTPUT_DIR="outputs/bigcode-ts-output-4000-formatted"
 TMP_REPORT="outputs/bigcode-ts-output-4000-prettier-passed.txt"
 
 # Clean output
@@ -13,17 +13,17 @@ mkdir -p "$OUTPUT_DIR"
 
 # Ensure Prettier is available
 if ! npx prettier --version > /dev/null 2>&1; then
-  echo "❌ Prettier is not installed. Run: npm install --save-dev prettier"
+  echo "Prettier is not installed. Run: npm install --save-dev prettier"
   exit 1
 fi
 
 # Process all .ts files
 find "$INPUT_DIR" -type f -name "*.ts" | while read -r file; do
   if npx prettier --check "$file" > /dev/null 2>&1; then
-    echo "✔️ $file"
+    echo "$file passed"
     echo "$file" >> "$TMP_REPORT"
   else
-    echo "❌ $file"
+    echo "$file not passed"
   fi
 done
 
@@ -35,5 +35,5 @@ while read -r file; do
   cp "$file" "$dest_path"
 done < "$TMP_REPORT"
 
-echo -e "\n✅ Copied formatted files to: $OUTPUT_DIR"
+echo -e "\nCopied formatted files to: $OUTPUT_DIR"
 rm "$TMP_REPORT"
