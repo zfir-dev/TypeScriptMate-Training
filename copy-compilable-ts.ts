@@ -28,7 +28,7 @@ function getAllTSFiles(dir: string): string[] {
 
 function isCompilable(filePath: string): boolean {
     try {
-        execSync(`tsc --noEmit "${filePath}"`, { stdio: 'ignore' });
+        execSync(`tsc --noEmit --strict --skipLibCheck "${filePath}"`, { stdio: 'ignore' });
         return true;
     } catch {
         return false;
