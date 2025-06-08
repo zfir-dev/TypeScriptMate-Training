@@ -3,6 +3,7 @@ outputs/
 node_modules/
 
 type-aware-preprocessing-in-ts-files.js
+copy-compilable-ts.js
 package.json
 package-lock.json
 
