@@ -1,6 +1,6 @@
 // ─── Install dependencies ─────────────────────────────────────────────────────
 // npm init -y
-// npm install ts-morph csv-writer typescript
+// npm install ts-morph csv-writer typescript @types/node
 
 import { Project, ts } from "ts-morph";
 import * as path from "path";
@@ -8,9 +8,9 @@ import * as fs from "fs";
 import { createObjectCsvWriter } from "csv-writer";
 
 // ─── CONFIG ──────────────────────────────────────────────────────────────────
-const SOURCE_DIR = "outputs/bigcode-ts-output-50000-formatted";
-const OUTPUT_FILE = "outputs/bigcode-ts-output-50000-types.csv";
-const BATCH_SIZE = 1000;
+const SOURCE_DIR = "outputs/github-ts-output-formatted";
+const OUTPUT_FILE = "outputs/github-ts-output-types.csv";
+const BATCH_SIZE = 1000; // Reduced batch size to prevent memory issues
 
 // ─── Ensure Output Directory Exists ──────────────────────────────────────────
 fs.mkdirSync(path.dirname(OUTPUT_FILE), { recursive: true });
@@ -18,14 +18,18 @@ fs.mkdirSync(path.dirname(OUTPUT_FILE), { recursive: true });
 // ─── Get All TS Files ────────────────────────────────────────────────────────
 function getAllTSFiles(dir: string): string[] {
     const results: string[] = [];
-    for (const file of fs.readdirSync(dir)) {
-        const fullPath = path.join(dir, file);
-        const stat = fs.statSync(fullPath);
-        if (stat.isDirectory()) {
-            results.push(...getAllTSFiles(fullPath));
-        } else if (file.endsWith(".ts")) {
-            results.push(fullPath);
+    try {
+        for (const file of fs.readdirSync(dir)) {
+            const fullPath = path.join(dir, file);
+            const stat = fs.statSync(fullPath);
+            if (stat.isDirectory()) {
+                results.push(...getAllTSFiles(fullPath));
+            } else if (file.endsWith(".ts")) {
+                results.push(fullPath);
+            }
         }
+    } catch (error) {
+        console.error(`Error reading directory ${dir}:`, error);
     }
     return results;
 }
@@ -45,6 +49,74 @@ const csvWriter = createObjectCsvWriter({
         { id: "usedTypes", title: "PredefinedTypesUsed" }
     ]
 });
+
+// ─── Process Single File ─────────────────────────────────────────────────────
+function processFile(sourceFile: any): any {
+    try {
+        const fileName = sourceFile.getBaseName();
+
+        const interfaces = sourceFile.getInterfaces().map((i: any) => i.getName());
+        const types = sourceFile.getTypeAliases().map((t: any) => t.getName());
+        const enums = sourceFile.getEnums().map((e: any) => e.getName());
+        const classes = sourceFile.getClasses().map((c: any) => c.getName()).filter(Boolean);
+
+        const decorators = sourceFile.getDescendantsOfKind(ts.SyntaxKind.Decorator)
+            .map((d: any) => {
+                try {
+                    return d.getExpression().getText();
+                } catch {
+                    return "<invalid>";
+                }
+            });
+
+        const imports = sourceFile.getImportDeclarations()
+            .map((imp: any) => {
+                try {
+                    return imp.getModuleSpecifier().getLiteralText();
+                } catch {
+                    return "<invalid>";
+                }
+            });
+
+        const exports = sourceFile.getExportDeclarations()
+            .map((exp: any) => {
+                try {
+                    const spec = exp.getModuleSpecifier();
+                    return spec ? spec.getLiteralText() : "export {...}";
+                } catch {
+                    return "export {...}";
+                }
+            });
+
+        const predefinedTypes = sourceFile
+            .getDescendantsOfKind(ts.SyntaxKind.TypeReference)
+            .map((ref: any) => ref.getText())
+            .filter((text: string) =>
+                [
+                    "string", "number", "boolean", "any", "void", "null", "undefined",
+                    "unknown", "never", "object", "Function", "Array", "Date", "RegExp",
+                    "Error", "Promise", "Map", "Set", "WeakMap", "WeakSet", "Symbol",
+                    "BigInt", "Buffer", "Uint8Array", "Int8Array", "Uint16Array", "Int16Array",
+                    "Uint32Array", "Int32Array", "Float32Array", "Float64Array", "DataView"
+                ].includes(text)
+            );
+
+        return {
+            file: fileName,
+            interfaces: interfaces.join(";"),
+            types: types.join(";"),
+            enums: enums.join(";"),
+            classes: classes.join(";"),
+            decorators: decorators.join(";"),
+            imports: imports.join(";"),
+            exports: exports.join(";"),
+            usedTypes: Array.from(new Set(predefinedTypes)).join(";")
+        };
+    } catch (error) {
+        console.error(`Error processing file ${sourceFile.getBaseName()}:`, error);
+        return null;
+    }
+}
 
 // ─── Main Processing ─────────────────────────────────────────────────────────
 async function processInBatches() {
@@ -67,80 +139,36 @@ async function processInBatches() {
             skipAddingFilesFromTsConfig: true,
         });
 
-        project.addSourceFilesAtPaths(batch);
+        try {
+            project.addSourceFilesAtPaths(batch);
 
-        const rows = [];
+            const rows: any[] = [];
 
-        for (const sourceFile of project.getSourceFiles()) {
-            const fileName = sourceFile.getBaseName();
+            for (const sourceFile of project.getSourceFiles()) {
+                const result = processFile(sourceFile);
+                if (result) {
+                    rows.push(result);
+                }
+            }
 
-            const interfaces = sourceFile.getInterfaces().map(i => i.getName());
-            const types = sourceFile.getTypeAliases().map(t => t.getName());
-            const enums = sourceFile.getEnums().map(e => e.getName());
-            const classes = sourceFile.getClasses().map(c => c.getName()).filter(Boolean);
+            if (rows.length > 0) {
+                await csvWriter.writeRecords(rows);
+            }
 
-            const decorators = sourceFile.getDescendantsOfKind(ts.SyntaxKind.Decorator)
-                .map(d => {
-                    try {
-                        return d.getExpression().getText();
-                    } catch {
-                        return "<invalid>";
-                    }
-                });
-
-            const imports = sourceFile.getImportDeclarations()
-                .map(imp => {
-                    try {
-                        return imp.getModuleSpecifier().getLiteralText();
-                    } catch {
-                        return "<invalid>";
-                    }
-                });
-
-            const exports = sourceFile.getExportDeclarations()
-                .map(exp => {
-                    try {
-                        const spec = exp.getModuleSpecifier();
-                        return spec ? spec.getLiteralText() : "export {...}";
-                    } catch {
-                        return "export {...}";
-                    }
-                });
-
-            const predefinedTypes = sourceFile
-                .getDescendantsOfKind(ts.SyntaxKind.TypeReference)
-                .map(ref => ref.getText())
-                .filter(text =>
-                    [
-                        "string", "number", "boolean", "any", "void", "null", "undefined",
-                        "unknown", "never", "object", "Function", "Array", "Date", "RegExp",
-                        "Error", "Promise", "Map", "Set", "WeakMap", "WeakSet", "Symbol",
-                        "BigInt", "Buffer", "Uint8Array", "Int8Array", "Uint16Array", "Int16Array",
-                        "Uint32Array", "Int32Array", "Float32Array", "Float64Array", "DataView"
-                    ].includes(text)
-                );
-
-            rows.push({
-                file: fileName,
-                interfaces: interfaces.join(";"),
-                types: types.join(";"),
-                enums: enums.join(";"),
-                classes: classes.join(";"),
-                decorators: decorators.join(";"),
-                imports: imports.join(";"),
-                exports: exports.join(";"),
-                usedTypes: Array.from(new Set(predefinedTypes)).join(";")
-            });
+            // Clean up project to free memory
+            for (const sourceFile of project.getSourceFiles()) {
+                project.removeSourceFile(sourceFile);
+            }
+        } catch (error) {
+            console.error(`Error processing batch ${Math.floor(i / BATCH_SIZE) + 1}:`, error);
         }
-
-        await csvWriter.writeRecords(rows);
     }
 
     console.log("All batches processed and written to:", OUTPUT_FILE);
 }
 
-processInBatches();
-
 // ─── Run the script ───────────────────────────────────────────────────────────
-// npx tsc type-aware-preprocessing-in-ts-files.ts
-// node --max-old-space-size=8192 type-aware-preprocessing-in-ts-files.js
+processInBatches().catch(error => {
+    console.error("Fatal error:", error);
+    process.exit(1);
+});
