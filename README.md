@@ -25,6 +25,11 @@ Steps to Train Model:
     npx tsc type-aware-preprocessing-in-ts-files.ts
     node --max-old-space-size=8192 type-aware-preprocessing-in-ts-files.js
     ```
+    ```bash
+    npx tsc copy-compilable-ts.ts
+    node --max-old-space-size=8192 copy-compilable-ts.js
+    ```
+
 
 3. Model Training
    - Use the generated CSV of the Data Preprocessing file as input for training
