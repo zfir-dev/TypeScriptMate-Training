@@ -2,9 +2,9 @@
 set -euo pipefail
 
 # Configuration
-INPUT_DIR="outputs/bigcode-ts-output-4000"
-OUTPUT_DIR="outputs/bigcode-ts-output-4000-formatted"
-TMP_REPORT="outputs/bigcode-ts-output-4000-prettier-passed.txt"
+INPUT_DIR="outputs/github-ts-output"
+OUTPUT_DIR="outputs/github-ts-output-formatted"
+TMP_REPORT="outputs/github-ts-output-prettier-passed.txt"
 
 # Clean output
 rm -rf "$OUTPUT_DIR"
