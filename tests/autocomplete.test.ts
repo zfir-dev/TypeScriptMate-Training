@@ -1,5 +1,7 @@
 import axios from 'axios'
 import { basics } from './basics'
+import { types } from './types'
+import { classes } from './classes'
 
 export interface Scenario {
   name: string
@@ -11,6 +13,8 @@ export const API_URL = 'https://zfir-typescriptmate.hf.space/complete'
 
 const scenarios: Scenario[] = [
   ...basics,
+  ...types,
+  ...classes
 ]
 
 describe('Autocomplete', () => {
@@ -21,6 +25,7 @@ describe('Autocomplete', () => {
         maxTokens: 32
       })
       const completion = res.data.completion
+      console.log("completion for", s.name, ": ", completion)
       expect(completion.startsWith(s.expectedStart)).toBeTruthy()
     })
   }
