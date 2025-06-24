@@ -36,6 +36,22 @@ Steps to Train Model:
    - The extracted type information can be used to train a model for type prediction
    - Run all the steps in the `TypeScript Files to Transformer Model` notebook
 
+## Running Training with tmux for 500K Dataset
+
+To run the training notebook in a detached session that continues even if your SSH connection/Jupyter connection drops:
+
+```bash
+sudo yum install -y tmux
+
+tmux new -s train
+papermill TS\ Files\ to\ Transformer\ Model.ipynb executed_notebook.ipynb
+```
+
+To reattach to the session:
+```bash
+tmux attach -t train
+```
+
 Deploy on Huggingface:
 
 ```bash
