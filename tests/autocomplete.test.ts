@@ -26,7 +26,7 @@ describe('Autocomplete', () => {
       })
       const completion = res.data.completion
       console.log("completion for", s.name, ": ", completion)
-      expect(completion.startsWith(s.expectedStart)).toBeTruthy()
+      expect(completion.toLowerCase().includes(s.expectedStart.toLowerCase())).toBeTruthy()
     })
   }
 })

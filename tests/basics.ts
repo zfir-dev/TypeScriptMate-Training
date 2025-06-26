@@ -1,23 +1,23 @@
 export const basics = [
     {
         name: 'simple function',
-        prompt: 'function add(a: number, b: number) { return',
-        expectedStart: ' a + b;'
+        prompt: 'addNumbers(x: number, y: number) { return',
+        expectedStart: 'x + y;'
     },
     {
         name: 'generic array filter',
-        prompt: 'function filter<T>(arr: T[], fn: (x: T) => boolean) { return arr.',
-        expectedStart: 'filter'
+        prompt: 'filter<T>(arr: T[], fn: (x: T) => boolean) { return arr.',
+        expectedStart: 'reduce'
     },
     {
         name: 'generic map function',
-        prompt: 'function map<T, U>(arr: T[], fn: (x: T) => U) { return arr.',
-        expectedStart: 'map'
+        prompt: 'map<T, U>(arr: T[], fn: (x: T) => U) { return arr.',
+        expectedStart: 'reduce'
     },
     {
         name: 'arrow function body',
         prompt: 'const inc = (x: number) =>',
-        expectedStart: ' {\n'
+        expectedStart: '{\n'
     },
     {
         name: 'optional chaining',

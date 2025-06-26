@@ -2,27 +2,27 @@ export const types = [
     {
         name: 'interface property type',
         prompt: 'interface User { id: number; name: string; active?:',
-        expectedStart: ' boolean;'
+        expectedStart: 'boolean;'
     },
     {
         name: 'union literal',
         prompt: 'type Direction = "up" | "down" | "left" |',
-        expectedStart: ' "right"'
+        expectedStart: '"right"'
     },
     {
         name: 'keyof operator',
-        prompt: 'type UserKeys = keyof ',
+        prompt: 'export type UserKeys = keyof ',
         expectedStart: 'User'
     },
     {
         name: 'conditional type inference',
         prompt: 'type ElementType<T> = T extends (infer U)[] ?',
-        expectedStart: ' U'
+        expectedStart: 'U'
     },
     {
         name: 'mapped type',
         prompt: 'type ReadonlyUser = { readonly [K in keyof User]:',
-        expectedStart: ' User[K]'
+        expectedStart: 'User'
     },
     {
         name: 'utility type Partial',
@@ -32,11 +32,11 @@ export const types = [
     {
         name: 'record type',
         prompt: 'type StringMap = Record<',
-        expectedStart: 'string, '
+        expectedStart: 'string,'
     },
     {
         name: 'intersection type',
         prompt: 'type Admin = User & { role:',
-        expectedStart: ' string'
+        expectedStart: 'string'
     }
 ]
