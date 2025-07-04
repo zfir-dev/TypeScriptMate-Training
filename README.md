@@ -64,3 +64,7 @@ cd outputs/typescriptmate
 huggingface-cli upload zfir/TypeScriptMate .
 ```
 
+Problems with evaluate lib:
+```
+pip install --user evaluate
+```
