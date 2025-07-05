@@ -8,6 +8,7 @@ import { asyncTests } from './async'
 import { decorators } from './decorators'
 import { modules } from './modules'
 import { advancedTypes } from './advanced-types'
+import { controlFlow } from './control-flow'
 
 export interface Scenario {
   name: string
@@ -27,6 +28,7 @@ const scenarios: Scenario[] = [
   ...decorators,
   ...modules,
   ...advancedTypes,
+  ...controlFlow,
 ]
 
 describe('Autocomplete', () => {
