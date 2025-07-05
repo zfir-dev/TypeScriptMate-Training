@@ -9,6 +9,7 @@ import { decorators } from './decorators'
 import { modules } from './modules'
 import { advancedTypes } from './advanced-types'
 import { controlFlow } from './control-flow'
+import { comments } from './comments'
 
 export interface Scenario {
   name: string
@@ -29,6 +30,7 @@ const scenarios: Scenario[] = [
   ...modules,
   ...advancedTypes,
   ...controlFlow,
+  ...comments,
 ]
 
 describe('Autocomplete', () => {
