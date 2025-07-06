@@ -15,7 +15,7 @@ export interface Scenario {
   type: string
   name: string
   prompt: string
-  expectedStart: string
+  expectedStart: string[]
 }
 
 export const API_URL = 'https://zfir-typescriptmate.hf.space/complete'
@@ -44,7 +44,7 @@ describe('All Tests', () => {
       })
       const completion = res.data.completion
       try {
-        expect(completion.toLowerCase().includes(s.expectedStart.toLowerCase())).toBeTruthy()
+        expect(s.expectedStart.some(start => completion.toLowerCase().includes(start.toLowerCase()))).toBeTruthy()
         results.push({
           type: s.type,
           name: s.name,

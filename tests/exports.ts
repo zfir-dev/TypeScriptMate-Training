@@ -3,84 +3,84 @@ export const exportTests = [
         type: 'exports',
         name: 'default export function',
         prompt: 'export default function',
-        expectedStart: 'void'
+        expectedStart: ['void']
     },
     {
         type: 'exports',
         name: 'default export arrow function',
         prompt: 'export default (',
-        expectedStart: '=>'
+        expectedStart: ['=>']
     },
     {
         type: 'exports',
         name: 'named export function',
         prompt: 'export function calculate',
-        expectedStart: 'number'
+        expectedStart: ['number']
     },
     {
         type: 'exports',
         name: 'named export const',
         prompt: 'export const API_URL =',
-        expectedStart: 'http'
+        expectedStart: ['http']
     },
     {
         type: 'exports',
         name: 'export interface',
         prompt: 'export interface User',
-        expectedStart: '{'
+        expectedStart: ['{']
     },
     {
         type: 'exports',
         name: 'export type',
         prompt: 'export type Status =',
-        expectedStart: 'Success'
+        expectedStart: ['Success']
     },
     {
         type: 'exports',
         name: 'export class',
         prompt: 'export class Service',
-        expectedStart: '{'
+        expectedStart: ['{']
     },
     {
         type: 'exports',
         name: 'export enum',
         prompt: 'export enum Color',
-        expectedStart: '{'
+        expectedStart: ['{']
     },
     {
         type: 'exports',
         name: 'export namespace',
         prompt: 'export namespace Utils',
-        expectedStart: '{'
+        expectedStart: ['{']
     },
     {
         type: 'exports',
         name: 'export with type assertion',
         prompt: 'export const userData = {} as',
-        expectedStart: 'User'
+        expectedStart: ['User']
     },
     {
         type: 'exports',
         name: 're-export',
         prompt: 'export { Component } from',
-        expectedStart: '\''
+        expectedStart: ['\'']
     },
     {
         type: 'exports',
         name: 're-export with alias',
         prompt: 'export { Component as MyComponent } from',
-        expectedStart: '\''
+        expectedStart: ['\'']
     },
     {
         type: 'exports',
         name: 'export all',
         prompt: 'export * from',
-        expectedStart: './'
+        expectedStart: ['./']
     },
     {
         type: 'exports',
         name: 'export default object',
         prompt: 'export default {',
-        expectedStart: 'name'
+        expectedStart: ['name']
     }
 ]; 
