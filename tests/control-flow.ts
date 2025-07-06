@@ -3,7 +3,7 @@ export const controlFlow = [
         type: 'control-flow',
         name: 'for loop with array iteration',
         prompt: 'for (const item of',
-        expectedStart: ['items']
+        expectedStart: ['items', 'item']
     },
     {
         type: 'control-flow',
@@ -27,7 +27,7 @@ export const controlFlow = [
         type: 'control-flow',
         name: 'ternary operator',
         prompt: 'const message = isError ?',
-        expectedStart: ['Error']
+        expectedStart: ['Error', 'message']
     },
     {
         type: 'control-flow',

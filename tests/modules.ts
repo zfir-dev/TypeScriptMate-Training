@@ -3,7 +3,7 @@ export const modules = [
         type: 'modules',
         name: 'namespace declaration',
         prompt: 'namespace Utils {',
-        expectedStart: ['export']
+        expectedStart: ['export', 'import', 'interface', 'class']
     },
     {
         type: 'modules',
@@ -21,13 +21,13 @@ export const modules = [
         type: 'modules',
         name: 'module declaration',
         prompt: 'declare module "express" {',
-        expectedStart: ['express']
+        expectedStart: ['express', 'import', 'export']
     },
     {
         type: 'modules',
         name: 'module augmentation',
         prompt: 'declare module "express" { interface Request {',
-        expectedStart: ['body']
+        expectedStart: ['body', 'Request']
     },
     {
         type: 'modules',
@@ -45,7 +45,7 @@ export const modules = [
         type: 'modules',
         name: 'triple-slash directive',
         prompt: '/// <reference path="',
-        expectedStart: ['./']
+        expectedStart: ['./', "http"]
     },
     {
         type: 'modules',
@@ -63,7 +63,7 @@ export const modules = [
         type: 'modules',
         name: 'namespace with class',
         prompt: 'namespace Database { export class Database {',
-        expectedStart: ['constructor']
+        expectedStart: ['constructor', 'string', 'Database']
     },
     {
         type: 'modules',

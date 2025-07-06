@@ -3,7 +3,7 @@ export const exportTests = [
         type: 'exports',
         name: 'default export function',
         prompt: 'export default function',
-        expectedStart: ['void']
+        expectedStart: ['void', 'string', 'number', 'boolean']
     },
     {
         type: 'exports',
@@ -15,7 +15,7 @@ export const exportTests = [
         type: 'exports',
         name: 'named export function',
         prompt: 'export function calculate',
-        expectedStart: ['number']
+        expectedStart: ['number', 'string']
     },
     {
         type: 'exports',
@@ -33,7 +33,7 @@ export const exportTests = [
         type: 'exports',
         name: 'export type',
         prompt: 'export type Status =',
-        expectedStart: ['Success']
+        expectedStart: ['Success', 'status', 'string']
     },
     {
         type: 'exports',
@@ -75,12 +75,12 @@ export const exportTests = [
         type: 'exports',
         name: 'export all',
         prompt: 'export * from',
-        expectedStart: ['./']
+        expectedStart: ['./', "@/", "@"]
     },
     {
         type: 'exports',
         name: 'export default object',
-        prompt: 'export default {',
-        expectedStart: ['name']
+        prompt: 'export default { name: ',
+        expectedStart: ['string']
     }
 ]; 

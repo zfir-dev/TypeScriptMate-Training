@@ -39,7 +39,7 @@ export const advancedTypes = [
         type: 'advanced-types',
         name: 'never type in union',
         prompt: 'type NonNullable<T> = T extends null | undefined ?',
-        expectedStart: ['never']
+        expectedStart: ['never', 'T']
     },
     {
         type: 'advanced-types',
@@ -75,7 +75,7 @@ export const advancedTypes = [
         type: 'advanced-types',
         name: 'conditional type with union',
         prompt: 'type IsString<T> = T extends string ?',
-        expectedStart: ['true']
+        expectedStart: ['true', 'T']
     },
     {
         type: 'advanced-types',

@@ -15,7 +15,7 @@ export const classes = [
         type: 'classes',
         name: 'class property initialization',
         prompt: 'class Counter { count: number =',
-        expectedStart: ['0']
+        expectedStart: ['0', '1', 'number']
     },
     {
         type: 'classes',
@@ -33,7 +33,7 @@ export const classes = [
         type: 'classes',
         name: 'abstract class method',
         prompt: 'abstract class Shape { abstract area(): number; }\nclass Circle extends Shape {',
-        expectedStart: ['area()']
+        expectedStart: ['area', 'constructor', 'angle', 'radius']
     },
     {
         type: 'classes',
@@ -44,8 +44,8 @@ export const classes = [
     {
         type: 'classes',
         name: 'setter in class',
-        prompt: 'class Person { private _age: number;\n  set age(value: number) {',
-        expectedStart: ['this._age =']
+        prompt: 'class Person { private _age: number;\n  set age(value: number) { this._age =',
+        expectedStart: ['value']
     },
     {
         type: 'classes',

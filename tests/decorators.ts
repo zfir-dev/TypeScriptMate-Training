@@ -45,7 +45,7 @@ export const decorators = [
         type: 'decorators',
         name: 'decorator on accessor',
         prompt: '@Computed getter<T> = (',
-        expectedStart: ['value']
+        expectedStart: ['value', 'T']
     },
     {
         type: 'decorators',

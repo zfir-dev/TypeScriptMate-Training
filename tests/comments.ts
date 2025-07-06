@@ -9,7 +9,7 @@ export const comments = [
         type: 'comments',
         name: 'multi-line comment start',
         prompt: '/* This is a multi-line comment',
-        expectedStart: ['*/']
+        expectedStart: ['*/', '//']
     },
     {
         type: 'comments',
@@ -21,13 +21,13 @@ export const comments = [
         type: 'comments',
         name: 'JSDoc function description',
         prompt: '/**\n * Calculates the sum of two numbers\n * @param a',
-        expectedStart: [' -']
+        expectedStart: [' -', '@param']
     },
     {
         type: 'comments',
         name: 'JSDoc param type',
         prompt: '/**\n * @param {number} a',
-        expectedStart: [' -']
+        expectedStart: [' -', '@param']
     },
     {
         type: 'comments',

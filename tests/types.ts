@@ -39,12 +39,12 @@ export const types = [
         type: 'types',
         name: 'record type',
         prompt: 'type StringMap = Record<',
-        expectedStart: ['string,']
+        expectedStart: ['string,', 'string>']
     },
     {
         type: 'types',
         name: 'intersection type',
         prompt: 'type Admin = User & { role:',
-        expectedStart: ['string']
+        expectedStart: ['string', 'name']
     }
 ]

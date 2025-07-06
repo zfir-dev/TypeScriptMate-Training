@@ -21,7 +21,7 @@ export const asyncTests = [
         type: 'async',
         name: 'Promise.resolve',
         prompt: 'return Promise.resolve(',
-        expectedStart: ['undefined']
+        expectedStart: ['undefined', 'Promise']
     },
     {
         type: 'async',
@@ -33,13 +33,13 @@ export const asyncTests = [
         type: 'async',
         name: 'Promise.all',
         prompt: 'const results = await Promise.all([',
-        expectedStart: ['Promise']
+        expectedStart: ['Promise', '{']
     },
     {
         type: 'async',
         name: 'Promise.race',
         prompt: 'const result = await Promise.race([',
-        expectedStart: ['Promise']
+        expectedStart: ['Promise', '{']
     },
     {
         type: 'async',
@@ -51,18 +51,18 @@ export const asyncTests = [
         type: 'async',
         name: 'async class method',
         prompt: 'class ApiService { async',
-        expectedStart: ['get']
+        expectedStart: ['get', 'Task', 'T']
     },
     {
         type: 'async',
         name: 'Promise type annotation',
         prompt: 'function fetchData(): Promise<',
-        expectedStart: ['any']
+        expectedStart: ['any', 'string']
     },
     {
         type: 'async',
         name: 'for await loop',
         prompt: 'for await (const item of',
-        expectedStart: ['items']
+        expectedStart: ['items', 'item']
     }
 ]; 

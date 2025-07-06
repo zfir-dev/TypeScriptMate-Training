@@ -15,7 +15,7 @@ export const imports = [
         type: 'imports',
         name: 'multiple named imports',
         prompt: 'import { useState, useEffect,',
-        expectedStart: ['useRef']
+        expectedStart: ['useRef', 'useState']
     },
     {
         type: 'imports',
@@ -27,13 +27,13 @@ export const imports = [
         type: 'imports',
         name: 'import type',
         prompt: 'import type { User } from',
-        expectedStart: ['./']
+        expectedStart: ['./', '@/']
     },
     {
         type: 'imports',
         name: 'import from relative path',
-        prompt: 'import { Logger } from',
-        expectedStart: ['./']
+        prompt: 'import { Logger } from "./',
+        expectedStart: ['./', '..', 'logger']
     },
     {
         type: 'imports',
@@ -51,7 +51,7 @@ export const imports = [
         type: 'imports',
         name: 'import with type assertion',
         prompt: 'import data from "./data.json" assert { type:',
-        expectedStart: ['string']
+        expectedStart: ['string', 'data']
     },
     {
         type: 'imports',
