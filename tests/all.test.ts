@@ -65,13 +65,48 @@ describe('All Tests', () => {
   }
 
   afterAll(() => {
-    // group results by type to calculate pass rate in percentage
-    const passRate = results.filter(r => r.passed).length / results.length * 100
-    console.log(`Pass rate: ${passRate}%`)
+    console.log('\n=== All Test Results by Type ===')
+    
+    // Group results by type
+    const groupedResults = results.reduce((acc, result) => {
+      if (!acc[result.type]) {
+        acc[result.type] = []
+      }
+      acc[result.type].push(result)
+      return acc
+    }, {} as Record<string, typeof results>)
 
-    // print results
-    results.forEach(r => {
-      console.log(`${r.type} - ${r.name} - ${r.passed ? '✅' : '❌'}`)
+    // Calculate and display results for each type
+    Object.entries(groupedResults).forEach(([type, typeResults]) => {
+      const passedCount = typeResults.filter(r => r.passed).length
+      const totalCount = typeResults.length
+      const percentage = ((passedCount / totalCount) * 100).toFixed(2)
+      
+      console.log(`\n${type.toUpperCase()} (${passedCount}/${totalCount} - ${percentage}%)`)
+      console.log('─'.repeat(50))
+      
+      // typeResults.forEach(result => {
+      //   const status = result.passed ? '✅ PASS' : '❌ FAIL'
+      //   console.log(`${status} ${result.name}`)
+      // })
     })
+
+    // Overall statistics
+    const totalPassed = results.filter(r => r.passed).length
+    const totalTests = results.length
+    const overallPercentage = ((totalPassed / totalTests) * 100).toFixed(2)
+    
+    console.log('\n' + '='.repeat(50))
+    console.log(`OVERALL RESULTS: ${totalPassed}/${totalTests} (${overallPercentage}%)`)
+    console.log('='.repeat(50))
+
+    // Show failed completions for debugging
+    // const failedResults = results.filter(r => !r.passed)
+    // if (failedResults.length > 0) {
+    //   console.log('\n=== Failed Completions ===')
+    //   failedResults.forEach(result => {
+    //     console.log(`${result.type} - ${result.name}: "${result.completion}"`)
+    //   })
+    // }
   })
 })
