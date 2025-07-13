@@ -7,4 +7,6 @@ copy-compilable-ts.js
 package.json
 package-lock.json
 
+x.ipynb
+
 .DS_Store
