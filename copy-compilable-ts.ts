@@ -2,8 +2,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { execSync } from 'child_process';
 
-const SOURCE_DIR = './outputs/bigcode-ts-output-4000-formatted';
-const TARGET_DIR = './outputs/bigcode-ts-output-4000-formatted-compilable';
+const SOURCE_DIR = './outputs/github-ts-output-formatted';
+const TARGET_DIR = './outputs/github-ts-output-formatted-compilable';
 const FILE_EXTENSION = '.ts';
 
 if (!fs.existsSync(TARGET_DIR)) {
