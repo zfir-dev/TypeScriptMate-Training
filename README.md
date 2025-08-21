@@ -165,7 +165,27 @@ This notebook is essential for:
 
 ---
 
-## Running Training with tmux for 500K Dataset
+### Simpler Model Demo and Usage
+
+#### HuggingFace TypeScriptModel Demo
+
+The `HuggingFace TypeScriptModel Demo.ipynb` notebook demonstrates how to load and use the trained TypeScriptMate model for code generation:
+
+##### Setup Requirements:
+```bash
+pip install transformers
+```
+
+##### Features:
+- **Model Loading**: Load the trained model from HuggingFace Hub
+- **Code Generation**: Generate TypeScript code completions
+- **Interactive Testing**: Test the model with custom prompts
+
+---
+
+## Miscellaneous
+
+### Running Training with tmux for 500K Dataset
 
 To run the training notebook in a detached session that continues even if your SSH connection/Jupyter connection drops:
 
@@ -197,21 +217,3 @@ Problems with evaluate lib:
 ```
 pip install --user evaluate
 ```
-
----
-
-## Model Demo and Usage
-
-### HuggingFace TypeScriptModel Demo
-
-The `HuggingFace TypeScriptModel Demo.ipynb` notebook demonstrates how to load and use the trained TypeScriptMate model for code generation:
-
-#### Setup Requirements:
-```bash
-pip install transformers
-```
-
-#### Features:
-- **Model Loading**: Load the trained model from HuggingFace Hub
-- **Code Generation**: Generate TypeScript code completions
-- **Interactive Testing**: Test the model with custom prompts
