@@ -25,7 +25,7 @@ The notebook will:
 
 ### 3. Verify Dataset Import
 
-After running the notebook, ensure the following files exist in your `outputs/` directory:
+After running the notebook, ensure the following files exist in the `outputs/` directory:
 - `bigcode-ts-output-4000/` (extracted folder)
 - `bigcode-ts-output-50000/` (extracted folder)
 - `github-ts-output/` (extracted folder)
@@ -71,11 +71,69 @@ After running the notebook, ensure the following files exist in your `outputs/` 
 
 ---
 
+## Model Testing and Validation
+
+### Comprehensive TypeScript Test Suite
+
+The `tests/` directory contains a comprehensive test suite to validate the trained TypeScriptMate model's capabilities across various TypeScript concepts:
+
+#### Test Categories:
+
+| Category | File | Description |
+|----------|------|-------------|
+| **Basics** | `basics.ts` | Function definitions, generics, arrow functions, optional chaining |
+| **Types** | `types.ts` | Interfaces, unions, keyof, conditional types, mapped types, utility types |
+| **Classes** | `classes.ts` | Class definitions, inheritance, access modifiers, static methods |
+| **Imports/Exports** | `imports.ts`, `exports.ts` | Module system, named exports, default exports |
+| **Async** | `async.ts` | Promises, async/await, error handling |
+| **Decorators** | `decorators.ts` | Class and method decorators, metadata |
+| **Modules** | `modules.ts` | ES modules, CommonJS compatibility |
+| **Advanced Types** | `advanced-types.ts` | Complex type patterns, conditional types, infer |
+| **Control Flow** | `control-flow.ts` | Loops, conditionals, switch statements |
+| **Comments** | `comments.ts` | JSDoc, inline comments, documentation |
+
+#### Running Tests:
+
+```bash
+# Install dependencies
+npm install jest @types/jest axios
+
+# Run all tests
+npm test
+
+# Or run with Jest directly
+npx jest tests/all.test.ts
+```
+
+#### Test Structure:
+Each test includes:
+- **Type**: Category of TypeScript concept being tested
+- **Name**: Descriptive test name
+- **Prompt**: Incomplete code snippet for the model to complete
+- **Expected Start**: Expected beginning of the completion
+
+#### API Integration:
+Tests connect to the deployed model via:
+```typescript
+const API_URL = 'https://zfir-typescriptmate.hf.space/complete'
+```
+
+#### Test Results:
+The test suite provides:
+- Individual test pass/fail status
+- Grouped results by TypeScript concept type
+- Overall success percentage
+- Detailed completion outputs for analysis
+
+This comprehensive testing ensures that the model can handle real-world TypeScript development scenarios and provides metrics for model performance evaluation.
+
+---
+
 ## Model Analytics and Insights
 
 ### Completions and Feedbacks Analysis
 
-The `Completions and Feedbacks Insights.ipynb` notebook provides comprehensive analytics on your trained TypeScriptMate model's performance:
+The `Completions and Feedbacks Insights.ipynb` notebook provides comprehensive analytics on the trained TypeScriptMate model's performance:
 
 #### Features:
 - **Completions Analysis**: 
@@ -146,7 +204,7 @@ pip install --user evaluate
 
 ### HuggingFace TypeScriptModel Demo
 
-The `HuggingFace TypeScriptModel Demo.ipynb` notebook demonstrates how to load and use your trained TypeScriptMate model for code generation:
+The `HuggingFace TypeScriptModel Demo.ipynb` notebook demonstrates how to load and use the trained TypeScriptMate model for code generation:
 
 #### Setup Requirements:
 ```bash
