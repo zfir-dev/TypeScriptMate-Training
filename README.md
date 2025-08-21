@@ -165,18 +165,18 @@ This notebook is essential for:
 
 ---
 
-### Simpler Model Demo and Usage
+## Simpler Model Demo and Usage
 
-#### HuggingFace TypeScriptModel Demo
+### HuggingFace TypeScriptModel Demo
 
 The `HuggingFace TypeScriptModel Demo.ipynb` notebook demonstrates how to load and use the trained TypeScriptMate model for code generation:
 
-##### Setup Requirements:
+#### Setup Requirements:
 ```bash
 pip install transformers
 ```
 
-##### Features:
+#### Features:
 - **Model Loading**: Load the trained model from HuggingFace Hub
 - **Code Generation**: Generate TypeScript code completions
 - **Interactive Testing**: Test the model with custom prompts
